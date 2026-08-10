@@ -34,8 +34,8 @@ final class UsageStore: ObservableObject {
     private var sessionAcc: [String: UsageSummary] = [:]
     private var sessionStart: [String: Date] = [:]
     private var timer: Timer?
-    private var isScanning = false
-    private var pricesDirty = false
+    private var lastScanTime: Date = .distantPast
+    private let scanInterval: TimeInterval = 1.0  // 最小间隔 1s
 
     private static let offsetsKey = "scanOffsets.v2"
     private static let activeWindow: TimeInterval = 24 * 3600
@@ -61,7 +61,7 @@ final class UsageStore: ObservableObject {
     }
 
     func stop() { timer?.invalidate(); timer = nil }
-    func refreshNow() { fullScan() }
+    func refreshNow() { lastScanTime = .distantPast; fullScan() }
 
     func reloadPricing() {
         priceTable = Pricing.load()
@@ -71,8 +71,9 @@ final class UsageStore: ObservableObject {
     // MARK: - 扫描
 
     private func fullScan() {
-        guard !isScanning else { return }
-        isScanning = true
+        let now = Date()
+        guard now.timeIntervalSince(lastScanTime) >= scanInterval else { return }
+        lastScanTime = now
         Task.detached(priority: .utility) { [weak self] in
             guard let self else { return }
             let parsed = await self.registry.fullScan()
@@ -82,7 +83,6 @@ final class UsageStore: ObservableObject {
                 self.offsets.merge(newOffsets) { _, new in new }
                 self.ingest(parsed, isFull: true)
                 self.persistOffsets()
-                self.isScanning = false
             }
         }
     }
@@ -100,8 +100,9 @@ final class UsageStore: ObservableObject {
     }
 
     private func incrementalScan() {
-        guard !isScanning else { return }
-        isScanning = true
+        let now = Date()
+        guard now.timeIntervalSince(lastScanTime) >= scanInterval else { return }
+        lastScanTime = now
         let active = registry.activeFiles()
         let off = offsets
         Task.detached(priority: .utility) { [active, off, weak self] in
@@ -138,7 +139,6 @@ final class UsageStore: ObservableObject {
                 self.offsets.merge(newOffsets) { _, new in new }
                 self.ingest(parsed, isFull: false)
                 self.lastScanAt = Date()
-                self.isScanning = false
             }
         }
     }
