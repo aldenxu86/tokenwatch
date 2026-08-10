@@ -1,0 +1,31 @@
+# ============================================================
+# TokenWatch —— macOS 菜单栏 token 用量实时监控
+# 用 xcodegen 生成 Xcode 项目: xcodegen generate
+# ============================================================
+name: TokenWatch
+options:
+  bundleIdPrefix: com.aldenxu
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+
+targets:
+  TokenWatch:
+    type: application
+    platform: macOS
+    sources:
+      - TokenWatch
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aldenxu.tokenwatch
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "6.0"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_LSUIElement: YES        # 无 Dock 图标,纯菜单栏应用
+        INFOPLIST_KEY_NSHumanReadableCopyright: "© 2026 Alden.Xu"
+        # 本地个人工具:不签名、不沙盒(直接读 ~/.claude 数据)
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGNING_REQUIRED: NO
+        CODE_SIGNING_ALLOWED: NO
+        ENABLE_HARDENED_RUNTIME: NO

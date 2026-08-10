@@ -1,0 +1,24 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserdata
+*.xcworkspace/xcuserdata
+*.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+xcuserdata/
+
+# macOS
+.DS_Store
+*.swp
+*~
+
+# Secrets
+.env
+*.pem
+*.key
+com.tokenwatch.proxy.plist
+launch-agent.sh
+
+# IDE
+.idea/
+.vscode/
+dist/

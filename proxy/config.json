@@ -1,0 +1,48 @@
+{
+  "port": 8787,
+  "host": "127.0.0.1",
+  "logDir": "~/.tokenwatch/proxy",
+  "providers": {
+    "deepseek": {
+      "baseUrl": "https://api.deepseek.com/v1",
+      "apiKey": "${DEEPSEEK_API_KEY}",
+      "path": "/chat/completions"
+    },
+    "zhipu": {
+      "baseUrl": "https://open.bigmodel.cn/api/paas/v4",
+      "apiKey": "${ZHIPU_API_KEY}",
+      "path": "/chat/completions"
+    },
+    "minimax": {
+      "baseUrl": "https://api.minimaxi.com/v1",
+      "apiKey": "${MINIMAX_API_KEY}",
+      "path": "/text/chatcompletion_v2"
+    },
+    "siliconflow": {
+      "baseUrl": "https://api.siliconflow.cn/v1",
+      "apiKey": "${SILICONFLOW_API_KEY}",
+      "path": "/chat/completions"
+    },
+    "dimleap": {
+      "baseUrl": "${DIMLEAP_BASE_URL}",
+      "apiKey": "${DIMLEAP_API_KEY}",
+      "path": "/chat/completions"
+    },
+    "aggregator": {
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "apiKey": "${OPENROUTER_API_KEY}",
+      "path": "/chat/completions"
+    }
+  },
+  "routes": [
+    { "prefix": "deepseek-ai/", "provider": "siliconflow" },
+    { "prefix": "Qwen/", "provider": "siliconflow" },
+    { "prefix": "THUDM/", "provider": "siliconflow" },
+    { "prefix": "deepseek-", "provider": "deepseek" },
+    { "prefix": "glm-", "provider": "zhipu" },
+    { "prefix": "minimax-", "provider": "minimax" },
+    { "prefix": "abab", "provider": "minimax" },
+    { "prefix": "MiniMax", "provider": "minimax" }
+  ],
+  "defaultProvider": "dimleap"
+}
