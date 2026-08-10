@@ -22,3 +22,5 @@ launch-agent.sh
 .idea/
 .vscode/
 dist/
+.claude/
+skills-lock.json
