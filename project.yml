@@ -23,6 +23,7 @@ targets:
         SWIFT_VERSION: "6.0"
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_LSUIElement: YES        # 无 Dock 图标,纯菜单栏应用
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         INFOPLIST_KEY_NSHumanReadableCopyright: "© 2026 Alden.Xu"
         # 本地个人工具:不签名、不沙盒(直接读 ~/.claude 数据)
         CODE_SIGN_IDENTITY: "-"
