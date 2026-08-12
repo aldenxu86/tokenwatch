@@ -10,6 +10,9 @@ tokenwatch/
 ├── project.yml             # xcodegen 规格(新增 Swift 文件后必须运行 xcodegen generate)
 ├── build-release.sh        # 打包 DMG 脚本
 ├── README.md               # 对外说明
+├── scripts/
+│   └── render-icon.swift   # 备用图标程序化渲染脚本(当前图标为用户素材,一般不用)
+├── TokenMonitor Final macOS App Icon 1024x1024.png  # 图标源素材(用户设计,勿删)
 ├── proxy/                  # Node.js 零依赖本地代理
 │   ├── server.js           # 代理服务(port 8787,记录非 Agent API 调用)
 │   └── config.json         # 路由/平台配置(apiKey 用 ${ENV} 占位,不落盘)
@@ -24,10 +27,11 @@ tokenwatch/
     ├── Pricing.swift            # 模型价格表(USD/CNY 货币区分)
     ├── KeychainStore.swift      # Keychain 封装(API Key 安全存储)
     ├── Models.swift             # UsageRecord/UsageSummary/ModelPricing/Format
+    ├── Assets.xcassets/         # 应用图标(AppIcon.appiconset 10 尺寸)
     ├── Views/
     │   ├── MenuBarView.swift    # 菜单栏下拉面板
     │   ├── DashboardView.swift  # 详情窗口(ScrollView)
-    │   ├── SettingsView.swift   # 设置(Agent/API/价格 三 Tab)
+    │   ├── SettingsView.swift   # 设置(Agent/API/价格/显示 四 Tab)
     │   └── AgentTabView.swift   # Agent 管理 Tab
     └── Scanners/               # 各 Agent 数据源实现
         ├── ClaudeCodeScanner.swift   # ~/.claude/projects/**/*.jsonl
@@ -85,9 +89,27 @@ pkill -x TokenWatch
 # 打包 DMG
 ./build-release.sh
 
-# 发布
-gh release create v<version> --title "TokenWatch v<version>" --notes "..." ./dist/TokenWatch-<version>.dmg
+# 发布(GitHub Release + Homebrew tap 同步)
+# 1) 发版前先升版本:MARKETING_VERSION(project.yml)+ build-release.sh 兜底版本号
+VERSION=vX.Y.Z
+gh release create $VERSION --title "TokenWatch $VERSION" --notes "..." ./dist/TokenWatch-$VERSION.dmg
+
+# 2) Homebrew tap 同步(在 ~/claude-workspace/homebrew-tokenwatch 目录)
+shasum -a 256 dist/TokenWatch-$VERSION.dmg     # → 更新 Casks/TokenWatch.rb 的 version + sha256
+git add -A && git commit -m "chore: bump to $VERSION" && git push
+
+# 3) 验证(本机)
+brew update && brew info aldenxu86/tokenwatch/tokenwatch && brew fetch --cask tokenwatch
+# 本机升级: brew upgrade --cask tokenwatch
 ```
+
+## 应用图标
+
+- **素材**:项目根 `TokenMonitor Final macOS App Icon 1024x1024.png`(用户设计,1024×1024,勿删)
+- **资产**:`TokenWatch/Assets.xcassets/AppIcon.appiconset/` 10 尺寸 PNG(16→1024),Contents.json 已配好
+- **工程配置**:project.yml 已设 `ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon`(构建后自动生成 AppIcon.icns)
+- **更换图标**:替换素材后,用 sips 重新生成 10 个尺寸进 appiconset(参考 scripts/render-icon.swift 的输出文件名),再 xcodegen + build
+- **验证**:构建后检查 `AppIcon.icns` 在 Resources 内、Info.plist `CFBundleIconName = AppIcon`;挂载 DMG 验证前先查遗留挂载(`hdiutil info | grep TokenWatch`,见避坑记录)
 
 ## Agent 安装检测
 

@@ -120,14 +120,16 @@ TokenWatch/
 ├── UsageStore.swift          # 数据引擎
 ├── UsageParser.swift         # JSONL 解析器
 ├── BalanceFetcher.swift      # 余额查询
+├── ExchangeRate.swift        # USD→CNY 汇率(双源 + 缓存兜底)
 ├── Pricing.swift             # 价格表
 ├── KeychainStore.swift       # Keychain 封装
 ├── Models.swift              # 数据模型
 ├── TokenWatchApp.swift       # App 入口
+├── Assets.xcassets/          # 应用图标(AppIcon 10 尺寸)
 ├── Views/
 │   ├── MenuBarView.swift     # 菜单栏面板
 │   ├── DashboardView.swift   # 详情窗口
-│   ├── SettingsView.swift    # 设置
+│   ├── SettingsView.swift    # 设置(Agent/API/价格/显示)
 │   └── AgentTabView.swift    # Agent 管理
 └── Scanners/                 # 各 Agent 实现
     ├── ClaudeCodeScanner.swift
@@ -140,6 +142,8 @@ TokenWatch/
     ├── TraeWorkScanner.swift
     ├── QoderWorkScanner.swift
     └── GenericJSONLScanner.swift
+scripts/
+└── render-icon.swift         # 备用图标渲染脚本
 proxy/
 ├── server.js                 # 代理服务
 └── config.json               # 路由配置
