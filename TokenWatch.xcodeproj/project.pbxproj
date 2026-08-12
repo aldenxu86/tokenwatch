@@ -242,7 +242,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aldenxu.tokenwatch;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 6.0;
@@ -266,7 +266,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aldenxu.tokenwatch;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 6.0;
