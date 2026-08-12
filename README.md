@@ -31,9 +31,11 @@ TokenWatch 是一个 macOS 原生(SwiftUI)菜单栏应用,自动扫描本地 AI 
 - 右键 App → 点"打开"
 - 或终端执行: `xattr -dr com.apple.quarantine /Applications/TokenWatch.app`
 
-### 方式 2:Homebrew(即将支持)
+### 方式 2:Homebrew
 
 ```bash
+brew tap aldenxu86/tokenwatch
+brew trust aldenxu86/tokenwatch   # brew 6 首次使用第三方 tap 需显式信任
 brew install --cask tokenwatch
 ```
 
