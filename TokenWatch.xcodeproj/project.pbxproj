@@ -28,6 +28,7 @@
 		EF2CB8B149E0FF7F8B2236E3 /* WorkBuddyScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA83991A5B0784B519CD73DF /* WorkBuddyScanner.swift */; };
 		F11171682D1F6899681A5532 /* AgentScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE45B9E0F1D865F8F1E00CF /* AgentScanner.swift */; };
 		F635E0220F6553507127C5C1 /* Pricing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBFD295113E09B905C8FCD3 /* Pricing.swift */; };
+		F6E6B2544D470EB4891D1FB3 /* ExchangeRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863704ABE41C6D8C22E0FAEC /* ExchangeRate.swift */; };
 		F771025067974082C8E892E1 /* ProxyLogScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4B32F9814C2DB0BC6478DC /* ProxyLogScanner.swift */; };
 		FB3A09C9A38D60426CA74E9F /* ClaudeCodeScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11215F5CD2B1B154D7634095 /* ClaudeCodeScanner.swift */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,7 @@
 		7362B08A681D237F22455CBE /* GenericJSONLScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericJSONLScanner.swift; sourceTree = "<group>"; };
 		7CBFD295113E09B905C8FCD3 /* Pricing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pricing.swift; sourceTree = "<group>"; };
 		7E33EA001D2EDA173ABBD447 /* QoderWorkScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QoderWorkScanner.swift; sourceTree = "<group>"; };
+		863704ABE41C6D8C22E0FAEC /* ExchangeRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRate.swift; sourceTree = "<group>"; };
 		8DBCE6CDE29E94DEA7BE1BCD /* ScannerRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerRegistry.swift; sourceTree = "<group>"; };
 		95256A536CA0B57C845D28AE /* BalanceFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceFetcher.swift; sourceTree = "<group>"; };
 		962C8A8F0F102733507D05E3 /* TokenWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TokenWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +103,7 @@
 			children = (
 				0CE45B9E0F1D865F8F1E00CF /* AgentScanner.swift */,
 				95256A536CA0B57C845D28AE /* BalanceFetcher.swift */,
+				863704ABE41C6D8C22E0FAEC /* ExchangeRate.swift */,
 				D026460947354CC73B41CA59 /* KeychainStore.swift */,
 				3A4916420E9E683D890EBBAE /* Models.swift */,
 				7CBFD295113E09B905C8FCD3 /* Pricing.swift */,
@@ -185,6 +188,7 @@
 				D98F5ED71737BCEC40E04B13 /* CodexScanner.swift in Sources */,
 				6671C7F19BF231D142B861EE /* CursorScanner.swift in Sources */,
 				3B0F82031688D8047205DDD8 /* DashboardView.swift in Sources */,
+				F6E6B2544D470EB4891D1FB3 /* ExchangeRate.swift in Sources */,
 				3A82BD295CA6CCB09553525C /* GenericJSONLScanner.swift in Sources */,
 				01A6919E43CA44858CF27FA1 /* KeychainStore.swift in Sources */,
 				39CEDA921659E9A11A05FF4D /* MenuBarView.swift in Sources */,
@@ -223,7 +227,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aldenxu.tokenwatch;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 6.0;
@@ -247,7 +251,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aldenxu.tokenwatch;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 6.0;

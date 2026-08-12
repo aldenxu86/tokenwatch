@@ -85,7 +85,9 @@ struct MenuBarView: View {
         .frame(width: 320)
     }
 
-    private func summaryRow(_ s: UsageSummary, title: String? = nil, emphasized: Bool = false) -> some View {
+    /// 汇总行:金额统一折算为 CNY 显示(按 store.usdToCNY 汇率)
+    private func summaryRow(_ s: UsageSummary, title: String? = nil, emphasized: Bool = false,
+                            currency: String = "CNY") -> some View {
         HStack(spacing: 8) {
             if let title {
                 Text(title)
@@ -101,22 +103,11 @@ struct MenuBarView: View {
                     .foregroundStyle(.tertiary)
             }
             Spacer()
-            Text(Format.cost(s.totalCost, currency: dominantCurrency))
+            Text(Format.cost(s.cost(in: currency, usdRate: store.usdToCNY), currency: currency))
                 .font(.system(.caption, design: .monospaced, weight: emphasized ? .semibold : .regular))
                 .foregroundStyle(emphasized ? .primary : .secondary)
         }
         .font(.system(.caption, design: .monospaced))
-    }
-
-    private var dominantCurrency: String {
-        // 用量最大的 Agent 来源决定货币
-        if let top = store.perSource.first {
-            return Pricing.currencyForAgent(top.source)
-        }
-        if let top = store.perModel.first?.model {
-            return Pricing.price(for: top, table: Pricing.load()).currency
-        }
-        return "CNY"
     }
 
     private func toggleDashboard() {

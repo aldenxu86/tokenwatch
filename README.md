@@ -143,6 +143,17 @@ proxy/
 └── config.json               # 路由配置
 ```
 
+## 更新日志
+
+**v0.2.0**
+- 汇总金额按实时汇率折算为人民币(¥)显示:菜单栏今日/近7日/累计与详情窗口汇总卡,USD 自动按汇率换算
+- 设置新增「显示」Tab:菜单栏图标可切换 今日 / 近7日 / 累计
+- USD→CNY 汇率自动获取(er-api + frankfurter 双源,6 小时缓存,失败兜底默认值)
+
+**v0.1.0**
+- 首个发布:全 Agent(Claude Code / Codex / Cursor / Trae 系列 / WorkBuddy / 自定义)Token 实时监控
+- 5 平台余额(DeepSeek / MiniMax / 智谱 / 硅基流动 / 千问)+ 本地代理日志统计
+
 ## 常见问题
 
 **菜单栏无数据?** 确保至少有一个 Agent 在运行(Claude Code / Codex CLI 等),数据在 2 秒内自动出现。

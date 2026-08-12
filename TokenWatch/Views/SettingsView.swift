@@ -18,6 +18,9 @@ struct SettingsView: View {
             PricingTabView()
                 .environmentObject(store)
                 .tabItem { Label("模型价格", systemImage: "dollarsign.circle") }.tag(2)
+            DisplayTabView()
+                .environmentObject(store)
+                .tabItem { Label("显示", systemImage: "eye") }.tag(3)
         }
         .frame(minWidth: 600, minHeight: 440)
         .padding(.top, 8)
@@ -168,4 +171,30 @@ struct PricingTabView: View {
             .multilineTextAlignment(.trailing)
     }
     private func save() { Pricing.save(prices); saved = true; store.reloadPricing() }
+}
+
+// MARK: - 显示 Tab
+
+struct DisplayTabView: View {
+    @EnvironmentObject private var store: UsageStore
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("菜单栏图标").font(.headline)
+            Text("菜单栏图标(tokens)显示的统计周期:")
+                .font(.caption).foregroundStyle(.secondary)
+            Picker("周期", selection: $store.menuBarPeriod) {
+                ForEach(MenuBarPeriod.allCases, id: \.self) { p in
+                    Text(p.label).tag(p)
+                }
+            }
+            .pickerStyle(.segmented)
+            .frame(maxWidth: 260)
+            Text("选择后立即生效,重启不变。下拉面板不受影响,仍显示全部汇总。")
+                .font(.caption2).foregroundStyle(.tertiary)
+            Spacer()
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
 }

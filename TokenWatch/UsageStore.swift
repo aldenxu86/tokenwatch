@@ -7,6 +7,22 @@ import Combine
 // - 记录每个文件的读取偏移 → 每秒增量扫描(实时)
 // - 聚合:今日 / 近7日 / 累计 / 按模型 / 按 source / 当前会话
 // ============================================================
+
+/// 菜单栏图标显示的统计周期(设置页「显示」Tab 可选,持久化)
+enum MenuBarPeriod: String, CaseIterable, Sendable {
+    case today = "today"
+    case week = "week"
+    case all = "all"
+
+    var label: String {
+        switch self {
+        case .today: return "今日"
+        case .week: return "近7日"
+        case .all: return "累计"
+        }
+    }
+}
+
 @MainActor
 final class UsageStore: ObservableObject {
 
@@ -22,6 +38,12 @@ final class UsageStore: ObservableObject {
     @Published var lastScanAt: Date?
     @Published var filesWatched = 0
     @Published var enabledAgentCount = 0
+    /// USD→CNY 汇率(汇总金额折算用,启动时异步拉取)
+    @Published var usdToCNY: Double = ExchangeRateFetcher.defaultUSDToCNY
+    /// 菜单栏图标显示的统计周期(设置页可选,变更即持久化)
+    @Published var menuBarPeriod: MenuBarPeriod {
+        didSet { UserDefaults.standard.set(menuBarPeriod.rawValue, forKey: Self.menuBarPeriodKey) }
+    }
 
     // MARK: 内部状态
     let registry: ScannerRegistry
@@ -38,11 +60,13 @@ final class UsageStore: ObservableObject {
     private let scanInterval: TimeInterval = 1.0  // 最小间隔 1s
 
     private static let offsetsKey = "scanOffsets.v2"
+    private static let menuBarPeriodKey = "menuBarPeriod"
     private static let activeWindow: TimeInterval = 24 * 3600
 
     init(registry: ScannerRegistry? = nil, priceTable: [String: ModelPricing]? = nil) {
         self.registry = registry ?? ScannerRegistry()
         self.priceTable = priceTable ?? Pricing.load()
+        self.menuBarPeriod = MenuBarPeriod(rawValue: UserDefaults.standard.string(forKey: Self.menuBarPeriodKey) ?? "") ?? .today
         self.registry.loadCustomScanners()
         loadOffsets()
     }
@@ -55,6 +79,10 @@ final class UsageStore: ObservableObject {
         guard !hasStarted else { return }
         hasStarted = true
         fullScan()
+        Task { [weak self] in
+            let rate = await ExchangeRateFetcher.current()
+            self?.usdToCNY = rate
+        }
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             Task { @MainActor [weak self] in self?.incrementalScan() }
         }

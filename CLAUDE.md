@@ -20,6 +20,7 @@ tokenwatch/
     ├── UsageStore.swift         # 数据引擎(ScannerRegistry 驱动)
     ├── UsageParser.swift        # JSONL 跨行解析(brace-balance 流式)
     ├── BalanceFetcher.swift     # 平台余额轮询(Keychain + 自定义 URL)
+    ├── ExchangeRate.swift       # USD→CNY 汇率(er-api/frankfurter 双源 + 缓存兜底)
     ├── Pricing.swift            # 模型价格表(USD/CNY 货币区分)
     ├── KeychainStore.swift      # Keychain 封装(API Key 安全存储)
     ├── Models.swift             # UsageRecord/UsageSummary/ModelPricing/Format

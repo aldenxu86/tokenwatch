@@ -55,17 +55,35 @@ struct UsageSummary: Sendable {
     var totalOutput = 0
     var totalCacheCreation = 0
     var totalCacheRead = 0
-    var totalCost = 0.0
+    /// 按币种分账(不同币种金额不能直接相加)
+    var costByCurrency: [String: Double] = [:]
     var requestCount = 0
 
     var totalTokens: Int { totalInput + totalOutput + totalCacheCreation + totalCacheRead }
+
+    /// 原始合计(未折算;仅单币种上下文可用,汇总显示请用 cost(in:usdRate:))
+    var totalCost: Double { costByCurrency.values.reduce(0, +) }
+
+    /// 折算为指定币种的合计。CNY 目标:USD × usdRate,其余币种按 1:1
+    /// (当前模型表只有 USD/CNY 两种币种)
+    func cost(in target: String, usdRate: Double) -> Double {
+        guard target.uppercased() == "CNY" else { return totalCost }
+        return costByCurrency.reduce(0) { sum, item in
+            let (currency, amount) = item
+            switch currency.uppercased() {
+            case "USD": return sum + amount * usdRate
+            default: return sum + amount
+            }
+        }
+    }
 
     mutating func add(_ r: UsageRecord, pricing: ModelPricing) {
         totalInput += r.inputTokens
         totalOutput += r.outputTokens
         totalCacheCreation += r.cacheCreationTokens
         totalCacheRead += r.cacheReadTokens
-        totalCost += r.estimatedCost(using: pricing)
+        let currency = pricing.currency.isEmpty ? "USD" : pricing.currency
+        costByCurrency[currency, default: 0] += r.estimatedCost(using: pricing)
         requestCount += 1
     }
 
@@ -75,8 +93,10 @@ struct UsageSummary: Sendable {
         s.totalOutput += rhs.totalOutput
         s.totalCacheCreation += rhs.totalCacheCreation
         s.totalCacheRead += rhs.totalCacheRead
-        s.totalCost += rhs.totalCost
         s.requestCount += rhs.requestCount
+        for (currency, amount) in rhs.costByCurrency {
+            s.costByCurrency[currency, default: 0] += amount
+        }
         return s
     }
 }

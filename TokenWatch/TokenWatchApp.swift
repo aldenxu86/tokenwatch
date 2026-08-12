@@ -54,14 +54,22 @@ struct TokenWatchApp: App {
     }
 }
 
-/// 菜单栏图标:今日 tokens 简写(如 "12.3k")
+/// 菜单栏图标:所选周期(今日/近7日/累计,设置里可切)tokens 简写(如 "12.3k")
 struct MenuBarLabel: View {
     @ObservedObject var store: UsageStore
 
+    private var periodSummary: UsageSummary {
+        switch store.menuBarPeriod {
+        case .today: return store.today
+        case .week: return store.week
+        case .all: return store.allTime
+        }
+    }
+
     var body: some View {
-        Text("📦 \(Format.tokens(store.today.totalTokens))")
+        Text("📦 \(Format.tokens(periodSummary.totalTokens))")
             .font(.system(size: 11, weight: .medium, design: .monospaced))
-            .help("TokenWatch:今日 \(Format.tokens(store.today.totalTokens)) tokens")
+            .help("TokenWatch:\(store.menuBarPeriod.label) \(Format.tokens(periodSummary.totalTokens)) tokens")
             .task {
                 store.start()
             }

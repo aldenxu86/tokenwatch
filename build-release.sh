@@ -17,7 +17,7 @@ xcodebuild -project TokenWatch.xcodeproj -scheme TokenWatch \
   -derivedDataPath build | tail -2
 
 APP="build/Build/Products/Release/TokenWatch.app"
-VERSION=$(defaults read "$APP/Contents/Info" CFBundleShortVersionString 2>/dev/null || echo "0.1.0")
+VERSION=$(defaults read "$APP/Contents/Info" CFBundleShortVersionString 2>/dev/null || echo "0.2.0")
 DMG="dist/TokenWatch-${VERSION}.dmg"
 
 mkdir -p dist

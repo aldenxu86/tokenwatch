@@ -21,17 +21,17 @@ struct DashboardView: View {
             VStack(alignment: .leading, spacing: 16) {
                 // 各平台余额
                 balanceSection
-                // 汇总卡片
+                // 汇总卡片(金额统一折算为 CNY,按实时汇率)
                 HStack(spacing: 12) {
                     SummaryCard(title: "今日", tokens: store.today.totalTokens,
-                                cost: store.today.totalCost, requests: store.today.requestCount,
-                                currency: dominantCurrency())
+                                cost: store.today.cost(in: "CNY", usdRate: store.usdToCNY),
+                                requests: store.today.requestCount, currency: "CNY")
                     SummaryCard(title: "近7日", tokens: store.week.totalTokens,
-                                cost: store.week.totalCost, requests: store.week.requestCount,
-                                currency: dominantCurrency())
+                                cost: store.week.cost(in: "CNY", usdRate: store.usdToCNY),
+                                requests: store.week.requestCount, currency: "CNY")
                     SummaryCard(title: "累计", tokens: store.allTime.totalTokens,
-                                cost: store.allTime.totalCost, requests: store.allTime.requestCount,
-                                currency: dominantCurrency())
+                                cost: store.allTime.cost(in: "CNY", usdRate: store.usdToCNY),
+                                requests: store.allTime.requestCount, currency: "CNY")
                 }
 
                 // 近30天趋势
@@ -110,17 +110,6 @@ struct DashboardView: View {
             }
             .padding(20)
         }
-    }
-
-    /// 用量最大的 Agent 的货币(汇总卡片用)
-    private func dominantCurrency() -> String {
-        if let top = store.perSource.first {
-            return Pricing.currencyForAgent(top.source)
-        }
-        if let top = store.perModel.first?.model {
-            return modelCurrency(top)
-        }
-        return "CNY"
     }
 
     /// 查某模型的货币
